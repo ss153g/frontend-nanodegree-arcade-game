@@ -47,13 +47,33 @@ Enemy.prototype.update = function(dt) {
 	// If the position is outside the canvas then we re-initialize the object.
 	if(this.x > ctx.canvas.width) {
 
-		// Calling the Enemy function with its context of "this"
-		Enemy.call(this);
+		// Calling the constructor of the specific instance of enemy that went outside the canvas.
+		this.constructor();
 	}
 
 	// Collision Detection
 	// Since we are already calling this function for position each time we iterate through the 'allEnemies' array
 	// the collision logic will be called from here to avoid iterating through the same array.
+
+	// Defining all variable that we will deal with.
+	// Gathering the X values of the current Enemy in question and the player's X value.
+	// Declaring another X2 value which makes up the width of the object.
+
+	var pX1 = player.x,
+		pX2 = pX1+50,
+		eX1 = Math.floor(this.x),
+		eX2 = eX1+75;
+
+	// Checking if the Y values of both objects are the same.
+	// if so, then we compare the checking for this:
+	//	For illustration purposes think of Player as {} and Enemy as []
+	//		Enemy.x1 < Player.x < Enemy.x2 -- Illustration: [{]}
+	//		Enemy.x1 > Player.x2 > Enemy.x2 -- Illustration: {[}]
+	if ( this.y === player.y && ( ( pX1 >= eX1 && pX1 <= eX2 ) || ( pX2 >= eX1 && pX2 <= eX2 ) ) ) {
+
+		// Once a collision is detected, we reset the player by calling its constructor()
+		player.constructor();
+	}
 };
 
 // Draw the enemy on the screen, required method for game
@@ -75,7 +95,7 @@ var Player = function(){
 	this.x = 101 * 2;
 
 	// Starting from 200 pixels above from the bottom of the canvas.
-	this.y = ctx.canvas.height - 200;
+	this.y = 60 + (4 * 83);
 };
 
 // Creating a fallback to Enemy methods for Player, where a Player method does not exist - like render().
@@ -93,6 +113,7 @@ Player.prototype.handleInput = function(dir) {
 // This is refactoring of a switch based code that I wrote earlier
 // This code creates a JSON object for each acceptable direction
 //	bound -- this object has the lowest and highest acceptable value for the canvas.
+//			the up/down value is based on the height of the image object. 101x171.
 //	move -- this object has the value of movement
 //			the value number is obtained from values used in Engine object to paint the screen.
 //	xy -- this object is used to access the appropriate "this" variable for movement.
@@ -109,12 +130,12 @@ Player.prototype.handleInput = function(dir) {
 			'xy'  : 'x'
 		},
 		'up' : {
-			'bound' : [-10, (ctx.canvas.height - 200 + 1 )],
+			'bound' : [-1, (ctx.canvas.height - 171 + 1 )],
 			'move'  : -83,
 			'xy'  : 'y'
 		},
 		'down' : {
-			'bound' : [-10, (ctx.canvas.height - 200 + 1 )],
+			'bound' : [-1, (ctx.canvas.height - 171 + 1 )],
 			'move'  : 83,
 			'xy'  : 'y'
 		}
@@ -139,7 +160,7 @@ Player.prototype.handleInput = function(dir) {
 	}
 
 	// Use the logging to determine the value after move.
-	console.log('player: '+this.x +" "+ this.y);
+//	console.log('player: '+this.x +' '+ this.y);
 };
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies

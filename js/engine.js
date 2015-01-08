@@ -81,7 +81,7 @@ var Engine = (function(global) {
     function update(dt) {
         updateEntities(dt);
         // checkCollisions();
-        if(player.y < 0){
+        if(false){
             reset();
         }
     }
@@ -166,10 +166,13 @@ var Engine = (function(global) {
      * which will initialize the object thus reseting it.
      */
      // TODO: need to implement a function that calls reset!
+     // Don't know how to call Reset to implemented it in Enemy.update() for now
     function reset() {
+        /* Looks like in the youtube video, only the player gets reset
         for(var e in allEnemies){
             allEnemies[e].constructor();
         }
+        */
         player.constructor();
     }
 
