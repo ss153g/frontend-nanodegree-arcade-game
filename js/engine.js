@@ -80,9 +80,34 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        // checkCollisions();
-        if(false){
-            reset();
+        checkCollisions();
+    }
+
+    // Collision Detection
+    // This function will get the current position of the player and loop
+    // through the allEnemies object to get their location
+    // then it will check for collision
+    function checkCollisions() {
+        // Defining all variable that we will deal with.
+        // Gathering the X values of the current Enemy in question and the player's X value.
+        // Declaring another X2 value which makes up the width of the object.
+        var pX1 = player.x,
+            pX2 = pX1+50,
+            eX1, eX2;
+        // Checking if the Y values of both objects are the same.
+        // if so, then we compare the checking for this:
+        //    For illustration purposes think of Player as {} and Enemy as []
+        //        Enemy.x1 < Player.x < Enemy.x2 -- Illustration: [{]}
+        //        Enemy.x1 > Player.x2 > Enemy.x2 -- Illustration: {[}]
+        for (var e in allEnemies){
+            eX1 = Math.floor(allEnemies[e].x),
+            eX2 = eX1+75;
+
+            if ( allEnemies[e].y === player.y && ( ( pX1 >= eX1 && pX1 <= eX2 ) || ( pX2 >= eX1 && pX2 <= eX2 ) ) ) {
+                console.log('collision');
+                // Once a collision is detected, we call the reset() function
+                reset();
+            }
         }
     }
 

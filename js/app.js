@@ -50,30 +50,8 @@ Enemy.prototype.update = function(dt) {
 		// Calling the constructor of the specific instance of enemy that went outside the canvas.
 		this.constructor();
 	}
-
-	// Collision Detection
 	// Since we are already calling this function for position each time we iterate through the 'allEnemies' array
-	// the collision logic will be called from here to avoid iterating through the same array.
-
-	// Defining all variable that we will deal with.
-	// Gathering the X values of the current Enemy in question and the player's X value.
-	// Declaring another X2 value which makes up the width of the object.
-
-	var pX1 = player.x,
-		pX2 = pX1+50,
-		eX1 = Math.floor(this.x),
-		eX2 = eX1+75;
-
-	// Checking if the Y values of both objects are the same.
-	// if so, then we compare the checking for this:
-	//	For illustration purposes think of Player as {} and Enemy as []
-	//		Enemy.x1 < Player.x < Enemy.x2 -- Illustration: [{]}
-	//		Enemy.x1 > Player.x2 > Enemy.x2 -- Illustration: {[}]
-	if ( this.y === player.y && ( ( pX1 >= eX1 && pX1 <= eX2 ) || ( pX2 >= eX1 && pX2 <= eX2 ) ) ) {
-
-		// Once a collision is detected, we reset the player by calling its constructor()
-		player.constructor();
-	}
+    // the collision logic should be called from here to avoid iterating through the same array.
 };
 
 // Draw the enemy on the screen, required method for game
@@ -105,7 +83,9 @@ Player.prototype = Object.create(Enemy.prototype);
 Player.prototype.constructor = Player;
 
 // Creating a separate update() method for Player instead of using Enemy's method.
-Player.prototype.update = function(){};
+Player.prototype.update = function(){
+    /* Can't seem to find a reason to call this method */
+};
 
 // Creating a new handle method for Player - this will be unique to Player.
 Player.prototype.handleInput = function(dir) {
